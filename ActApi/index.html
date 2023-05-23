@@ -54,6 +54,10 @@
             <p class="lead">
                 NOTE:BEFORE YOU UPDATE AND DELETE DATA, NEED TO SELECT IN TABLE.
             </p>
+            <div class="d-flex justify-content-end gap-3">
+                <div id="btnHide">           
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -71,12 +75,7 @@
 
                 </tbody>
             </table>
-            
-            <div class="d-flex justify-content-end gap-3">
-                <form method="post" id="btnHide">           
-                </form>
-            </div>
-
+          
         </div>
       </div>
       
@@ -110,10 +109,6 @@
                       document.getElementById("Employee").innerHTML = txt;
                   }
               },
-              error: function(xhr, status, error) {
-                  var err = eval("(" + xhr.responseText + ")");                    
-                  alert(err.Message);
-              }
           })
       });
 
@@ -132,12 +127,9 @@
                       type: "POST",
                       data: JSON.stringify(data),
                       success: function(response) {
-                        document.location = '/';
+                        alert("Record Added");
+                        window.location.href = 'index.html';
                       },
-                      error: function(xhr, status, error) {
-                          var err = eval("(" + xhr.responseText + ")");                    
-                          console.log(err.Message);
-                      }
                   });
                 })
         }
@@ -160,20 +152,19 @@
                   }
                   txt += 
                   `
-                    <button type="submit" class="btn btn-success "onclick="update_record(${item.id})">Update</button>
-                    <button type="submit" class="btn btn-danger " onclick="delete_record(${item.id})" >Delete</button>
+                      <button class="btn btn-success "onclick="update_record()">Update</button>
+                      <button class="btn btn-danger " onclick="delete_record()" >Delete</button>
                   `;
                   document.getElementById("btnHide").innerHTML = txt;
 
                 },
                 error: function(xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");                    
-                    console.log(err.Message);
+
                 }
             });
         }
         function update_record(){
-          var empid = document.getElementById("empid").value
+          const empid = document.getElementById("empid").value
           var data = {
                 first_name : document.getElementById("first_name").value,
                 mid_add : document.getElementById("mid_add").value,
@@ -183,32 +174,26 @@
                 address : document.getElementById("address").value,
           };
           $.ajax({
-              url: `http://finalapi.test/employee/edit/${empid}`,
+              url: `http://finalapi.test/employee/update/${empid}`,
               type: "PUT",
-              contentType: "application/json",
+              contentType: "application/json; charset=utf-8",
               data: JSON.stringify(data),
-              success: function(response) {
-                  
+              complete: function(response) {
+                alert("Record Updated");
+                window.location.href = 'index.html';
               },
-              error: function(xhr, status, error) {
-                  var err = eval("(" + xhr.responseText + ")");                    
-                  console.log('Error: ' + err.Message);
-              }
           });
       }
-
-        function delete_record(id) {
-            var empid = document.getElementById("empid").value
+        function delete_record() {
+            const empid = document.getElementById("empid").value
             $.ajax({
-                url: `http://finalapi.test/employee/delete/${id}`,
+                url: `http://finalapi.test/employee/delete/${empid}`,
                 type: "DELETE",
-                success: function(response) {
-                      document.location = '/';
+                contentType: "application/json; charset=utf-8",
+                complete: function(response) {
+                  alert("Record Deleted");
+                  window.location.href = 'index.html';
                 },
-                error: function(xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");                    
-                    console.log(err.Message);
-                }
             });
         }
     </script>
