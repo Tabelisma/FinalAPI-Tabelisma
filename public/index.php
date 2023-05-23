@@ -100,7 +100,7 @@ $app->post('/employee/add', function (Request $request, Response $response, arra
 $app->put('/employee/update/{id}', function (Request $request, Response $response, array $args) {
     $sql = null;
 
-    $id = $request->getAttribute('id');   
+    $id = $args['id'];   
     $data = $request->getBody();
     $value = json_decode($data, TRUE);
 
